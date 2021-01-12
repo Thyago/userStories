@@ -1,0 +1,60 @@
+# Execute to load the app with Hot Reloading: mvnw compile quarkus:dev
+# Execute to load the app with Hot Reloading and clean compile: mvnw clean compile quarkus:dev -Dquarkus.profile=dev
+# Execute to generate the compiled app on target folder: mvnw package -Dquarkus.profile=dev
+# Execute to generate the compiled native app on target folder: mvnw package -Dquarkus.profile=dev -Pnative
+
+app:
+  pagination:
+    default_limit: 50
+
+quarkus:
+  datasource:
+    db-kind: postgresql
+    username: postgres
+    password: 123456
+    jdbc:
+      url: jdbc:postgresql://vlpt_postgres:54321/vlpt_userstories
+      max-size: 16
+
+  http:
+    port: 8080
+    cors: true
+
+#  oidc:
+#    auth-server-url: http://vlpt_keycloak:8180/auth/realms/UserStory
+#    client-id: account
+#    credentials:
+#      secret: bc0581f8-764f-44ec-a34e-8eca14322c61
+
+#resteasy:
+#  role:
+#    based:
+#      security: true
+
+#"org.eclipse":
+#  microprofile:
+#    rest:
+#      client:
+#        propagateHeaders: Authorization
+
+
+"%dev":
+  quarkus:
+    # DB generation options: none, create, drop-and-create, drop, update
+    hibernate-orm:
+      database:
+        generation: drop-and-create
+      sql-load-script: devDBFixtures.sql
+ 
+    # OpenAPI
+    smallrye-openapi:
+      path: /openApi
+    swagger-ui:
+      path: /openApi-ui
+      # Include swagger UI on production
+      #always-include=true
+    log:
+      level: DEBUG
+      category:
+        "org.hibernate":
+          #level: DEBUG
